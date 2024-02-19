@@ -243,7 +243,7 @@ quarkus.package.type=uber-jar
 image::runner-jar-in-target.png[]
 
 
-== Docker image erstellen
+== Create docker Image
 
 * Therefore, we need a `Dockerfile`.
 * There are already Dockerfiles in `src/main/docker` - these are not needed and can be deleted
