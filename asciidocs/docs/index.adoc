@@ -127,7 +127,7 @@ applying codestarts...
 ====
 
 
-== run the quarkus-project
+== Run the quarkus Project
 
 [source,shell]
 ----
@@ -144,7 +144,7 @@ cd jib-demo
 
 image::http-request.png[]
 
-<you can also use cURL>:
+* you can also use cURL:
 
 [source, shell]
 ----
@@ -153,7 +153,17 @@ curl -i http://localhost:8080/hello # <.>
 
 <.> -i shows the header of the response.
 
+.result
+[%collapsible]
+====
+----
+HTTP/1.1 200 OK
+content-length: 28
+Content-Type: text/plain;charset=UTF-8
 
+Hello from RESTEasy Reactive%
+----
+====
 
 == Start minikube
 
