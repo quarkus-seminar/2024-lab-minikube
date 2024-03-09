@@ -55,6 +55,7 @@ echo '[[ $commands[kubectl] ]] && source <(kubectl completion zsh)' >> ~/.zshrc 
 
 * https://kubernetes.io/docs/reference/kubectl/quick-reference/[kubectl Quick Reference (Cheat Sheet)^]
 
+
 == Overview
 
 image::deployment-to-minikube.png[]
@@ -135,9 +136,9 @@ cd jib-demo
 ./mvnw clean quarkus:dev
 ----
 
-=== Request the  REST-Endpoints
+== Request the  REST-Endpoints
 
-*Create a REST-Client
+* Create a REST-Client
 
 ** New folder in project-Root: `http-requests`
 ** create a new file in this folder: `requests.http`
