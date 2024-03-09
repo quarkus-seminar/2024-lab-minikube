@@ -556,7 +556,7 @@ pre.rouge .gs {
 <div class="details">
 <span id="author" class="author">Thomas W. Stütz</span><br>
 <span id="revnumber">version 1.0.0,</span>
-<span id="revdate">2024-02-19</span>
+<span id="revdate">2024-03-09</span>
 <br><span id="revremark">build a simple rest endpoint and deploy app to minikube/cloud</span>
 </div>
 <div id="toc" class="toc2">
@@ -564,26 +564,23 @@ pre.rouge .gs {
 <ul class="sectlevel1">
 <li><a href="#_overview">1. Overview</a></li>
 <li><a href="#_create_the_quarkus_project">2. Create the quarkus Project</a></li>
-<li><a href="#_run_the_quarkus_project">3. Run the quarkus Project</a>
+<li><a href="#_run_the_quarkus_project">3. Run the quarkus Project</a></li>
+<li><a href="#_request_the_rest_endpoints">4. Request the  REST-Endpoints</a></li>
+<li><a href="#_start_minikube">5. Start minikube</a></li>
+<li><a href="#_jar_file_erstellen_uber_jar">6. .jar File erstellen (uber-jar)</a></li>
+<li><a href="#_create_docker_image">7. Create docker Image</a></li>
+<li><a href="#_docker_image_push_to_docker_registry">8. Docker image push to Docker Registry</a></li>
+<li><a href="#_configure_kubernetes_deployment">9. Configure kubernetes Deployment</a></li>
+<li><a href="#_deploy_to_minikube_the_first_time">10. Deploy to minikube the first time</a>
 <ul class="sectlevel2">
-<li><a href="#_request_the_rest_endpoints">3.1. Request the  REST-Endpoints</a></li>
+<li><a href="#_check_the_success">10.1. Check the Success</a></li>
+<li><a href="#_fix_problems">10.2. Fix problems</a></li>
 </ul>
 </li>
-<li><a href="#_start_minikube">4. Start minikube</a></li>
-<li><a href="#_jar_file_erstellen_uber_jar">5. .jar File erstellen (uber-jar)</a></li>
-<li><a href="#_create_docker_image">6. Create docker Image</a></li>
-<li><a href="#_docker_image_push_to_docker_registry">7. Docker image push to Docker Registry</a></li>
-<li><a href="#_configure_kubernetes_deployment">8. Configure kubernetes Deployment</a></li>
-<li><a href="#_deploy_to_minikube_the_first_time">9. Deploy to minikube the first time</a>
-<ul class="sectlevel2">
-<li><a href="#_check_the_success">9.1. Check the Success</a></li>
-<li><a href="#_fix_problems">9.2. Fix problems</a></li>
-</ul>
-</li>
-<li><a href="#_re_deploy_to_minikube">10. Re-Deploy to minikube</a></li>
-<li><a href="#_port_forward_from_minikube">11. Port Forward from minikube</a></li>
-<li><a href="#_access_the_app">12. Access the App</a></li>
-<li><a href="#_troubleshooting">13. Troubleshooting</a></li>
+<li><a href="#_re_deploy_to_minikube">11. Re-Deploy to minikube</a></li>
+<li><a href="#_port_forward_from_minikube">12. Port Forward from minikube</a></li>
+<li><a href="#_access_the_app">13. Access the App</a></li>
+<li><a href="#_troubleshooting">14. Troubleshooting</a></li>
 </ul>
 </div>
 </div>
@@ -754,11 +751,15 @@ applying codestarts...
 ./mvnw clean quarkus:dev</code></pre>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_request_the_rest_endpoints"><a class="anchor" href="#_request_the_rest_endpoints"></a>3.1. Request the  REST-Endpoints</h3>
-<div class="paragraph">
-<p>*Create a REST-Client</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_request_the_rest_endpoints"><a class="anchor" href="#_request_the_rest_endpoints"></a>4. Request the  REST-Endpoints</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Create a REST-Client</p>
 <div class="ulist">
 <ul>
 <li>
@@ -766,6 +767,9 @@ applying codestarts...
 </li>
 <li>
 <p>create a new file in this folder: <code>requests.http</code></p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
@@ -810,9 +814,8 @@ Hello from RESTEasy Reactive%</pre>
 </details>
 </div>
 </div>
-</div>
 <div class="sect1">
-<h2 id="_start_minikube"><a class="anchor" href="#_start_minikube"></a>4. Start minikube</h2>
+<h2 id="_start_minikube"><a class="anchor" href="#_start_minikube"></a>5. Start minikube</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
@@ -887,7 +890,7 @@ minikube addons enable dashboard</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_jar_file_erstellen_uber_jar"><a class="anchor" href="#_jar_file_erstellen_uber_jar"></a>5. .jar File erstellen (uber-jar)</h2>
+<h2 id="_jar_file_erstellen_uber_jar"><a class="anchor" href="#_jar_file_erstellen_uber_jar"></a>6. .jar File erstellen (uber-jar)</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="title">Precondition</div>
@@ -915,7 +918,7 @@ minikube addons enable dashboard</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_create_docker_image"><a class="anchor" href="#_create_docker_image"></a>6. Create docker Image</h2>
+<h2 id="_create_docker_image"><a class="anchor" href="#_create_docker_image"></a>7. Create docker Image</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -992,7 +995,7 @@ gghcr.io/htl-leonding/backend    latest        ae27690f900d   53 seconds ago   2
 </div>
 </div>
 <div class="sect1">
-<h2 id="_docker_image_push_to_docker_registry"><a class="anchor" href="#_docker_image_push_to_docker_registry"></a>7. Docker image push to Docker Registry</h2>
+<h2 id="_docker_image_push_to_docker_registry"><a class="anchor" href="#_docker_image_push_to_docker_registry"></a>8. Docker image push to Docker Registry</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
@@ -1087,7 +1090,7 @@ latest: digest: sha256:50c58e0426ad4b4335c791d7f60efcad24cc9c5554d5e7f35f0438186
 </div>
 </div>
 <div class="sect1">
-<h2 id="_configure_kubernetes_deployment"><a class="anchor" href="#_configure_kubernetes_deployment"></a>8. Configure kubernetes Deployment</h2>
+<h2 id="_configure_kubernetes_deployment"><a class="anchor" href="#_configure_kubernetes_deployment"></a>9. Configure kubernetes Deployment</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="title">check, if you are still in project root, then:</div>
@@ -1201,7 +1204,7 @@ touch k8s/appsrv.yaml</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_deploy_to_minikube_the_first_time"><a class="anchor" href="#_deploy_to_minikube_the_first_time"></a>9. Deploy to minikube the first time</h2>
+<h2 id="_deploy_to_minikube_the_first_time"><a class="anchor" href="#_deploy_to_minikube_the_first_time"></a>10. Deploy to minikube the first time</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
@@ -1220,7 +1223,7 @@ service/appsrv created</pre>
 </div>
 </details>
 <div class="sect2">
-<h3 id="_check_the_success"><a class="anchor" href="#_check_the_success"></a>9.1. Check the Success</h3>
+<h3 id="_check_the_success"><a class="anchor" href="#_check_the_success"></a>10.1. Check the Success</h3>
 <div class="listingblock">
 <div class="content">
 <pre>minikube dashboard</pre>
@@ -1267,7 +1270,7 @@ service/appsrv created</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_fix_problems"><a class="anchor" href="#_fix_problems"></a>9.2. Fix problems</h3>
+<h3 id="_fix_problems"><a class="anchor" href="#_fix_problems"></a>10.2. Fix problems</h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/dashboard-02.png" alt="dashboard 02">
@@ -1317,7 +1320,7 @@ service/appsrv created</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_re_deploy_to_minikube"><a class="anchor" href="#_re_deploy_to_minikube"></a>10. Re-Deploy to minikube</h2>
+<h2 id="_re_deploy_to_minikube"><a class="anchor" href="#_re_deploy_to_minikube"></a>11. Re-Deploy to minikube</h2>
 <div class="sectionbody">
 <details>
 <summary class="title">build and push the image</summary>
@@ -1365,7 +1368,7 @@ docker push ghcr.io/htl-leonding/backend:latest</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_port_forward_from_minikube"><a class="anchor" href="#_port_forward_from_minikube"></a>11. Port Forward from minikube</h2>
+<h2 id="_port_forward_from_minikube"><a class="anchor" href="#_port_forward_from_minikube"></a>12. Port Forward from minikube</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="title">Port forwarding</div>
@@ -1400,7 +1403,7 @@ Forwarding from [::1]:8080 -&gt; 8080</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_access_the_app"><a class="anchor" href="#_access_the_app"></a>12. Access the App</h2>
+<h2 id="_access_the_app"><a class="anchor" href="#_access_the_app"></a>13. Access the App</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
@@ -1420,7 +1423,7 @@ Hello from RESTEasy Reactive%</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>13. Troubleshooting</h2>
+<h2 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>14. Troubleshooting</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="title">open an ssh-shell in minikube</div>
@@ -1443,7 +1446,7 @@ Hello from RESTEasy Reactive%</pre>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.0<br>
-Last updated 2024-02-19 13:14:17 UTC
+Last updated 2024-03-09 08:20:30 UTC
 </div>
 </div>
 </body>
