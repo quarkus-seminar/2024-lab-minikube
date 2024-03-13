@@ -132,7 +132,7 @@ applying codestarts...
 
 [source,shell]
 ----
-cd jib-demo
+cd minikube-demo
 ./mvnw clean quarkus:dev
 ----
 
