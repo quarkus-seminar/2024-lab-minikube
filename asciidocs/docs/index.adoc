@@ -16,6 +16,7 @@ ifdef::env-github[]
 :caution-caption: :fire:
 :warning-caption: :warning:
 endif::[]
+:experimental:
 
 [discrete]
 == Voraussetzungen
@@ -48,6 +49,7 @@ endif::[]
 * It is highly recommended to install autocompletion für kubectl.
 +
 .https://kubernetes.io/docs/reference/kubectl/quick-reference/#zsh[kubectl autocomplete for zsh^]
+[source,shellscript]
 ----
 source <(kubectl completion zsh)  # set up autocomplete in zsh into the current shell
 echo '[[ $commands[kubectl] ]] && source <(kubectl completion zsh)' >> ~/.zshrc # add autocomplete permanently to your zsh shell
@@ -70,7 +72,7 @@ image::deployment-to-minikube.png[]
 
 [source, shell]
 ----
-mvn io.quarkus.platform:quarkus-maven-plugin:3.7.3:create \
+mvn io.quarkus.platform:quarkus-maven-plugin:3.8.2:create \
     -DprojectGroupId=at.htl.minikube \
     -DprojectArtifactId=minikube-demo \
     -Dextensions='resteasy-reactive, smallrye-health'
@@ -126,6 +128,12 @@ applying codestarts...
 [INFO] ------------------------------------------------------------------------
 ----
 ====
+
+or create a project on https://code.quarkus.io/?g=at.htl.minikube&a=minikube-demo&j=21&e=resteasy-reactive-jackson&e=smallrye-health[quarkus.io^] - kbd:[START CODING].
+
+TIP: On https://code.quarkus.io/?g=at.htl.minikube&a=minikube-demo&j=21&e=resteasy-reactive-jackson&e=smallrye-health[quarkus.io^] you can also create a github-repo automatically.
+
+image::quarkus-io.png[]
 
 
 == Run the quarkus Project

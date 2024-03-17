@@ -46,3 +46,4 @@ nb-configuration.xml
 *.jar
 *.idea
 asciidocs/docs/pdf/
+/asciidocs/docs/*.html
