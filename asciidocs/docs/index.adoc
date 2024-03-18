@@ -1,7 +1,7 @@
 = Übung Minikube-Demo
 // Metadata
-Thomas W. Stütz
-1.0.0, {docdate}: build a simple rest endpoint and deploy app to minikube/cloud
+Thomas W. Stütz, thanks to Christian Aberger for his professional input
+2.0.0, {docdate}: build a simple rest endpoint and deploy app to minikube/cloud
 //:source-highlighter: rouge
 ifndef::imagesdir[:imagesdir: images]
 :sourcedir: ../src/main/java
@@ -57,6 +57,128 @@ echo '[[ $commands[kubectl] ]] && source <(kubectl completion zsh)' >> ~/.zshrc 
 
 * https://kubernetes.io/docs/reference/kubectl/quick-reference/[kubectl Quick Reference (Cheat Sheet)^]
 
+== Start minikube
+
+We do not need minikube at the moment, but we will start to make sure that it is working.
+
+[source,shell]
+----
+minikube start
+----
+
+.result
+[%collapsible]
+====
+----
+😄  minikube v1.32.0 on Darwin 14.3.1 (arm64)
+✨  Automatically selected the docker driver
+📌  Using Docker Desktop driver with root privileges
+👍  Starting control plane node minikube in cluster minikube
+🚜  Pulling base image ...
+💾  Downloading Kubernetes v1.28.3 preload ...
+    > preloaded-images-k8s-v18-v1...:  341.16 MiB / 341.16 MiB  100.00% 1.81 Mi
+    > gcr.io/k8s-minikube/kicbase...:  410.57 MiB / 410.58 MiB  100.00% 1.36 Mi
+🔥  Creating docker container (CPUs=2, Memory=7793MB) ...
+🐳  Preparing Kubernetes v1.28.3 on Docker 24.0.7 ...
+    ▪ Generating certificates and keys ...
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
+🔗  Configuring bridge CNI (Container Networking Interface) ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+----
+====
+
+* Falls die Meldung erscheint, dass der Cluster veraltet ist, dann `minikube stop` und `minikube delete`. Beim anschließenden `minikube start` wird ein Cluster mit aktueller kubernetes-Software erstellt.
+
+* Check, in the "🌟  Enabled addons:"-section, that metrics-server and dashboard are installed.
+
+** When missing:
++
+----
+minikube addons enable metrics-server
+minikube addons enable dashboard
+----
+
+.check the successfull installation with
+[source, shell]
+----
+minikube addons list |grep enabled
+----
+
+.result
+----
+| dashboard                   | minikube | enabled ✅   | Kubernetes                     |
+| default-storageclass        | minikube | enabled ✅   | Kubernetes                     |
+| metrics-server              | minikube | enabled ✅   | Kubernetes                     |
+| storage-provisioner         | minikube | enabled ✅   | minikube                       |
+----
+
+=== Minikube configuration
+
+* For accessing minikube and later on k8s, we need kubectl.
+
+
+image::kubectl.png[]
+
+* check the correct configuration
+
+[source,shell]
+----
+ kubectl config view
+----
+
+.result
+[%collapsible]
+====
+----
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: /Users/stuetz/.minikube/ca.crt
+    extensions:
+    - extension:
+        last-update: Sun, 17 Mar 2024 12:10:05 CET
+        provider: minikube.sigs.k8s.io
+        version: v1.32.0
+      name: cluster_info
+    server: https://127.0.0.1:59820
+  name: minikube
+contexts:
+- context:
+    cluster: minikube
+    extensions:
+    - extension:
+        last-update: Sun, 17 Mar 2024 12:10:05 CET
+        provider: minikube.sigs.k8s.io
+        version: v1.32.0
+      name: context_info
+    namespace: default
+    user: minikube
+  name: minikube
+current-context: minikube
+kind: Config
+preferences: {}
+users:
+- name: minikube
+  user:
+    client-certificate: /Users/stuetz/.minikube/profiles/minikube/client.crt
+    client-key: /Users/stuetz/.minikube/profiles/minikube/client.key
+----
+====
+
+[source,shell]
+----
+ kubectl config get-contexts
+----
+
+.result
+----
+CURRENT   NAME       CLUSTER    AUTHINFO   NAMESPACE
+*         minikube   minikube   minikube   default
+----
 
 == Overview
 
@@ -174,69 +296,19 @@ Hello from RESTEasy Reactive%
 ----
 ====
 
-== Start minikube
-
-[source,shell]
-----
-minikube start
-----
-
-.result
-[%collapsible]
-====
-----
-😄  minikube v1.32.0 on Darwin 14.3.1 (arm64)
-✨  Automatically selected the docker driver
-📌  Using Docker Desktop driver with root privileges
-👍  Starting control plane node minikube in cluster minikube
-🚜  Pulling base image ...
-💾  Downloading Kubernetes v1.28.3 preload ...
-    > preloaded-images-k8s-v18-v1...:  341.16 MiB / 341.16 MiB  100.00% 1.81 Mi
-    > gcr.io/k8s-minikube/kicbase...:  410.57 MiB / 410.58 MiB  100.00% 1.36 Mi
-🔥  Creating docker container (CPUs=2, Memory=7793MB) ...
-🐳  Preparing Kubernetes v1.28.3 on Docker 24.0.7 ...
-    ▪ Generating certificates and keys ...
-    ▪ Booting up control plane ...
-    ▪ Configuring RBAC rules ...
-🔗  Configuring bridge CNI (Container Networking Interface) ...
-🔎  Verifying Kubernetes components...
-    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
-🌟  Enabled addons: storage-provisioner, default-storageclass
-🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
-----
-====
-
-* Falls die Meldung erscheint, dass der Cluster veraltet ist, dann `minikube stop` und `minikube delete`. Beim anschließenden `minikube start` wird ein Cluster mit aktueller kubernetes-Software erstellt.
-
-* Check, in the "🌟  Enabled addons:"-section, that metrics-server and dashboard are installed.
-
-** When missing:
-+
-----
-minikube addons enable metrics-server
-minikube addons enable dashboard
-----
-
-.check the successfull installation with
-[source, shell]
-----
-minikube addons list |grep enabled
-----
-
-.result
-----
-| dashboard                   | minikube | enabled ✅   | Kubernetes                     |
-| default-storageclass        | minikube | enabled ✅   | Kubernetes                     |
-| metrics-server              | minikube | enabled ✅   | Kubernetes                     |
-| storage-provisioner         | minikube | enabled ✅   | minikube                       |
-----
 
 
 
+== Create a .jar File (uber-jar)
 
-== .jar File erstellen (uber-jar)
+=== What is a uber-jar?
 
-.Precondition
+[link=https://blog.payara.fish/what-is-a-java-uber-jar]
+image::uber-jar.png[]
+
+=== How to create an uber-jar?
+
+.Precondition - add this entry to the application.properties
 [source,properties]
 ----
 quarkus.package.type=uber-jar
