@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.20">
-<meta name="author" content="Thomas W. Stütz">
+<meta name="author" content="Thomas W. Stütz, thanks to Christian Aberger for his professional input">
 <link rel="icon" type="image/png" href="themes/favicon.png">
 <title>Übung Minikube-Demo</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
@@ -554,20 +554,29 @@ pre.rouge .gs {
 <div id="header">
 <h1>Übung Minikube-Demo</h1>
 <div class="details">
-<span id="author" class="author">Thomas W. Stütz</span><br>
-<span id="revnumber">version 1.0.0,</span>
-<span id="revdate">2024-03-13</span>
+<span id="author" class="author">Thomas W. Stütz, thanks to Christian Aberger for his professional input</span><br>
+<span id="revnumber">version 2.0.0,</span>
+<span id="revdate">2024-03-18</span>
 <br><span id="revremark">build a simple rest endpoint and deploy app to minikube/cloud</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_overview">1. Overview</a></li>
-<li><a href="#_create_the_quarkus_project">2. Create the quarkus Project</a></li>
-<li><a href="#_run_the_quarkus_project">3. Run the quarkus Project</a></li>
-<li><a href="#_request_the_rest_endpoints">4. Request the  REST-Endpoints</a></li>
-<li><a href="#_start_minikube">5. Start minikube</a></li>
-<li><a href="#_jar_file_erstellen_uber_jar">6. .jar File erstellen (uber-jar)</a></li>
+<li><a href="#_start_minikube">1. Start minikube</a>
+<ul class="sectlevel2">
+<li><a href="#_minikube_configuration">1.1. Minikube configuration</a></li>
+</ul>
+</li>
+<li><a href="#_overview">2. Overview</a></li>
+<li><a href="#_create_the_quarkus_project">3. Create the quarkus Project</a></li>
+<li><a href="#_run_the_quarkus_project">4. Run the quarkus Project</a></li>
+<li><a href="#_request_the_rest_endpoints">5. Request the  REST-Endpoints</a></li>
+<li><a href="#_create_a_jar_file_uber_jar">6. Create a .jar File (uber-jar)</a>
+<ul class="sectlevel2">
+<li><a href="#_what_is_a_uber_jar">6.1. What is a uber-jar?</a></li>
+<li><a href="#_how_to_create_an_uber_jar">6.2. How to create an uber-jar?</a></li>
+</ul>
+</li>
 <li><a href="#_create_docker_image">7. Create docker Image</a></li>
 <li><a href="#_docker_image_push_to_docker_registry">8. Docker image push to Docker Registry</a></li>
 <li><a href="#_configure_kubernetes_deployment">9. Configure kubernetes Deployment</a></li>
@@ -635,8 +644,8 @@ pre.rouge .gs {
 <div class="listingblock">
 <div class="title"><a href="https://kubernetes.io/docs/reference/kubectl/quick-reference/#zsh" target="_blank" rel="noopener">kubectl autocomplete for zsh</a></div>
 <div class="content">
-<pre>source &lt;(kubectl completion zsh)  # set up autocomplete in zsh into the current shell
-echo '[[ $commands[kubectl] ]] &amp;&amp; source &lt;(kubectl completion zsh)' &gt;&gt; ~/.zshrc # add autocomplete permanently to your zsh shell</pre>
+<pre class="rouge highlight"><code data-lang="shellscript">source &lt;(kubectl completion zsh)  # set up autocomplete in zsh into the current shell
+echo '[[ $commands[kubectl] ]] &amp;&amp; source &lt;(kubectl completion zsh)' &gt;&gt; ~/.zshrc # add autocomplete permanently to your zsh shell</code></pre>
 </div>
 </div>
 </li>
@@ -648,175 +657,11 @@ echo '[[ $commands[kubectl] ]] &amp;&amp; source &lt;(kubectl completion zsh)' &
 </div>
 </div>
 <div class="sect1">
-<h2 id="_overview"><a class="anchor" href="#_overview"></a>1. Overview</h2>
+<h2 id="_start_minikube"><a class="anchor" href="#_start_minikube"></a>1. Start minikube</h2>
 <div class="sectionbody">
-<div class="imageblock">
-<div class="content">
-<img src="images/deployment-to-minikube.png" alt="deployment to minikube">
-</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>First we create a simple REST-endpoint with quarkus.</p>
-</li>
-<li>
-<p>We create an uber-jar.</p>
-</li>
-<li>
-<p>We build a docker image with the jar-filee.</p>
-</li>
-<li>
-<p>We push the docker image to an image registry (ghcr.io).</p>
-</li>
-<li>
-<p>We deploy the docker image to minikube.</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_create_the_quarkus_project"><a class="anchor" href="#_create_the_quarkus_project"></a>2. Create the quarkus Project</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell">mvn io.quarkus.platform:quarkus-maven-plugin:3.7.3:create <span class="se">\</span>
-    <span class="nt">-DprojectGroupId</span><span class="o">=</span>at.htl.minikube <span class="se">\</span>
-    <span class="nt">-DprojectArtifactId</span><span class="o">=</span>minikube-demo <span class="se">\</span>
-    <span class="nt">-Dextensions</span><span class="o">=</span><span class="s1">'resteasy-reactive, smallrye-health'</span></code></pre>
-</div>
-</div>
 <div class="paragraph">
-<p>or start the script <a href="create-project.sh">create-project.sh</a></p>
+<p>We do not need minikube at the moment, but we will start to make sure that it is working.</p>
 </div>
-<details>
-<summary class="title">result</summary>
-<div class="content">
-<div class="listingblock">
-<div class="content">
-<pre>[INFO] Scanning for projects...
-[INFO]
-[INFO] ------------------&lt; org.apache.maven:standalone-pom &gt;-------------------
-[INFO] Building Maven Stub Project (No POM) 1
-[INFO] --------------------------------[ pom ]---------------------------------
-[INFO]
-[INFO] --- quarkus:3.7.3:create (default-cli) @ standalone-pom ---
-[INFO] Looking for the newly published extensions in registry.quarkus.io
-[INFO] -----------
-[INFO] selected extensions:
-- io.quarkus:quarkus-smallrye-health
-- io.quarkus:quarkus-resteasy-reactive
-
-[INFO]
-applying codestarts...
-[INFO] 📚 java
-🔨 maven
-📦 quarkus
-📝 config-properties
-🔧 tooling-dockerfiles
-🔧 tooling-maven-wrapper
-🚀 resteasy-reactive-codestart
-🚀 smallrye-health-codestart
-[INFO]
------------
-[SUCCESS] ✅  quarkus project has been successfully generated in:
---&gt; /Users/stuetz/work/_delete/minikube-demo
------------
-[INFO]
-[INFO] ========================================================================================
-[INFO] Your new application has been created in /Users/stuetz/work/_delete/minikube-demo
-[INFO] Navigate into this directory and launch your application with mvn quarkus:dev
-[INFO] Your application will be accessible on http://localhost:8080
-[INFO] ========================================================================================
-[INFO]
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  4.232 s
-[INFO] Finished at: 2024-02-19T08:12:54+01:00
-[INFO] ------------------------------------------------------------------------</pre>
-</div>
-</div>
-</div>
-</details>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_run_the_quarkus_project"><a class="anchor" href="#_run_the_quarkus_project"></a>3. Run the quarkus Project</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nb">cd </span>minikube-demo
-./mvnw clean quarkus:dev</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_request_the_rest_endpoints"><a class="anchor" href="#_request_the_rest_endpoints"></a>4. Request the  REST-Endpoints</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Create a REST-Client</p>
-<div class="ulist">
-<ul>
-<li>
-<p>New folder in project-Root: <code>http-requests</code></p>
-</li>
-<li>
-<p>create a new file in this folder: <code>requests.http</code></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/http-request.png" alt="http request">
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>you can also use cURL:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell">curl <span class="nt">-i</span> http://localhost:8080/hello <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>-i shows the header of the response.</td>
-</tr>
-</table>
-</div>
-<details>
-<summary class="title">result</summary>
-<div class="content">
-<div class="listingblock">
-<div class="content">
-<pre>HTTP/1.1 200 OK
-content-length: 28
-Content-Type: text/plain;charset=UTF-8
-
-Hello from RESTEasy Reactive%</pre>
-</div>
-</div>
-</div>
-</details>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_start_minikube"><a class="anchor" href="#_start_minikube"></a>5. Start minikube</h2>
-<div class="sectionbody">
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="shell">minikube start</code></pre>
@@ -887,13 +732,290 @@ minikube addons enable dashboard</pre>
 | storage-provisioner         | minikube | enabled ✅   | minikube                       |</pre>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_minikube_configuration"><a class="anchor" href="#_minikube_configuration"></a>1.1. Minikube configuration</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>For accessing minikube and later on k8s, we need kubectl.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/kubectl.png" alt="kubectl">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>check the correct configuration</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"> kubectl config view</code></pre>
+</div>
+</div>
+<details>
+<summary class="title">result</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre>apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: /Users/stuetz/.minikube/ca.crt
+    extensions:
+    - extension:
+        last-update: Sun, 17 Mar 2024 12:10:05 CET
+        provider: minikube.sigs.k8s.io
+        version: v1.32.0
+      name: cluster_info
+    server: https://127.0.0.1:59820
+  name: minikube
+contexts:
+- context:
+    cluster: minikube
+    extensions:
+    - extension:
+        last-update: Sun, 17 Mar 2024 12:10:05 CET
+        provider: minikube.sigs.k8s.io
+        version: v1.32.0
+      name: context_info
+    namespace: default
+    user: minikube
+  name: minikube
+current-context: minikube
+kind: Config
+preferences: {}
+users:
+- name: minikube
+  user:
+    client-certificate: /Users/stuetz/.minikube/profiles/minikube/client.crt
+    client-key: /Users/stuetz/.minikube/profiles/minikube/client.key</pre>
+</div>
+</div>
+</div>
+</details>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"> kubectl config get-contexts</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre>CURRENT   NAME       CLUSTER    AUTHINFO   NAMESPACE
+*         minikube   minikube   minikube   default</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_jar_file_erstellen_uber_jar"><a class="anchor" href="#_jar_file_erstellen_uber_jar"></a>6. .jar File erstellen (uber-jar)</h2>
+<h2 id="_overview"><a class="anchor" href="#_overview"></a>2. Overview</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="images/deployment-to-minikube.png" alt="deployment to minikube">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>First we create a simple REST-endpoint with quarkus.</p>
+</li>
+<li>
+<p>We create an uber-jar.</p>
+</li>
+<li>
+<p>We build a docker image with the jar-filee.</p>
+</li>
+<li>
+<p>We push the docker image to an image registry (ghcr.io).</p>
+</li>
+<li>
+<p>We deploy the docker image to minikube.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_the_quarkus_project"><a class="anchor" href="#_create_the_quarkus_project"></a>3. Create the quarkus Project</h2>
 <div class="sectionbody">
 <div class="listingblock">
-<div class="title">Precondition</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">mvn io.quarkus.platform:quarkus-maven-plugin:3.8.2:create <span class="se">\</span>
+    <span class="nt">-DprojectGroupId</span><span class="o">=</span>at.htl.minikube <span class="se">\</span>
+    <span class="nt">-DprojectArtifactId</span><span class="o">=</span>minikube-demo <span class="se">\</span>
+    <span class="nt">-Dextensions</span><span class="o">=</span><span class="s1">'resteasy-reactive, smallrye-health'</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or start the script <a href="create-project.sh">create-project.sh</a></p>
+</div>
+<details>
+<summary class="title">result</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre>[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------&lt; org.apache.maven:standalone-pom &gt;-------------------
+[INFO] Building Maven Stub Project (No POM) 1
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- quarkus:3.7.3:create (default-cli) @ standalone-pom ---
+[INFO] Looking for the newly published extensions in registry.quarkus.io
+[INFO] -----------
+[INFO] selected extensions:
+- io.quarkus:quarkus-smallrye-health
+- io.quarkus:quarkus-resteasy-reactive
+
+[INFO]
+applying codestarts...
+[INFO] 📚 java
+🔨 maven
+📦 quarkus
+📝 config-properties
+🔧 tooling-dockerfiles
+🔧 tooling-maven-wrapper
+🚀 resteasy-reactive-codestart
+🚀 smallrye-health-codestart
+[INFO]
+-----------
+[SUCCESS] ✅  quarkus project has been successfully generated in:
+--&gt; /Users/stuetz/work/_delete/minikube-demo
+-----------
+[INFO]
+[INFO] ========================================================================================
+[INFO] Your new application has been created in /Users/stuetz/work/_delete/minikube-demo
+[INFO] Navigate into this directory and launch your application with mvn quarkus:dev
+[INFO] Your application will be accessible on http://localhost:8080
+[INFO] ========================================================================================
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.232 s
+[INFO] Finished at: 2024-02-19T08:12:54+01:00
+[INFO] ------------------------------------------------------------------------</pre>
+</div>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p>or create a project on <a href="https://code.quarkus.io/?g=at.htl.minikube&amp;a=minikube-demo&amp;j=21&amp;e=resteasy-reactive-jackson&amp;e=smallrye-health" target="_blank" rel="noopener">quarkus.io</a> - <kbd>START CODING</kbd>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+On <a href="https://code.quarkus.io/?g=at.htl.minikube&amp;a=minikube-demo&amp;j=21&amp;e=resteasy-reactive-jackson&amp;e=smallrye-health" target="_blank" rel="noopener">quarkus.io</a> you can also create a github-repo automatically.
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/quarkus-io.png" alt="quarkus io">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_run_the_quarkus_project"><a class="anchor" href="#_run_the_quarkus_project"></a>4. Run the quarkus Project</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">cd </span>minikube-demo
+./mvnw clean quarkus:dev</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_request_the_rest_endpoints"><a class="anchor" href="#_request_the_rest_endpoints"></a>5. Request the  REST-Endpoints</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Create a REST-Client</p>
+<div class="ulist">
+<ul>
+<li>
+<p>New folder in project-Root: <code>http-requests</code></p>
+</li>
+<li>
+<p>create a new file in this folder: <code>requests.http</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/http-request.png" alt="http request">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>you can also use cURL:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">curl <span class="nt">-i</span> http://localhost:8080/hello <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>-i shows the header of the response.</td>
+</tr>
+</table>
+</div>
+<details>
+<summary class="title">result</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre>HTTP/1.1 200 OK
+content-length: 28
+Content-Type: text/plain;charset=UTF-8
+
+Hello from RESTEasy Reactive%</pre>
+</div>
+</div>
+</div>
+</details>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_a_jar_file_uber_jar"><a class="anchor" href="#_create_a_jar_file_uber_jar"></a>6. Create a .jar File (uber-jar)</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_what_is_a_uber_jar"><a class="anchor" href="#_what_is_a_uber_jar"></a>6.1. What is a uber-jar?</h3>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="https://blog.payara.fish/what-is-a-java-uber-jar"><img src="images/uber-jar.png" alt="uber jar"></a>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_create_an_uber_jar"><a class="anchor" href="#_how_to_create_an_uber_jar"></a>6.2. How to create an uber-jar?</h3>
+<div class="listingblock">
+<div class="title">Precondition - add this entry to the application.properties</div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="properties"><span class="py">quarkus.package.type</span><span class="p">=</span><span class="s">uber-jar</span></code></pre>
 </div>
@@ -913,6 +1035,7 @@ minikube addons enable dashboard</pre>
 <div class="imageblock">
 <div class="content">
 <img src="images/runner-jar-in-target.png" alt="runner jar in target">
+</div>
 </div>
 </div>
 </div>
@@ -1445,8 +1568,8 @@ Hello from RESTEasy Reactive%</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.0<br>
-Last updated 2024-03-13 12:01:38 UTC
+Version 2.0.0<br>
+Last updated 2024-03-18 21:59:10 UTC
 </div>
 </div>
 </body>
