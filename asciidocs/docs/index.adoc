@@ -311,7 +311,7 @@ image::uber-jar.png[]
 .Precondition - add this entry to the application.properties
 [source,properties]
 ----
-quarkus.package.type=uber-jar
+quarkus.package.jar.type=uber-jar
 ----
 
 [source, shell]
