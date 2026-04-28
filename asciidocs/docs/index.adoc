@@ -110,10 +110,11 @@ minikube addons list |grep enabled
 
 .result
 ----
-| dashboard                   | minikube | enabled ✅   | Kubernetes                     |
-| default-storageclass        | minikube | enabled ✅   | Kubernetes                     |
-| metrics-server              | minikube | enabled ✅   | Kubernetes                     |
-| storage-provisioner         | minikube | enabled ✅   | minikube                       |
+│ dashboard             │ minikube │ enabled ✅ │ Kubernetes  │
+│ default-storageclass  │ minikube │ enabled ✅ │ Kubernetes  │
+│ ingress               │ minikube │ enabled ✅ │ Kubernetes  │
+│ metrics-server        │ minikube │ enabled ✅ │ Kubernetes  │
+│ storage-provisioner   │ minikube │ enabled ✅ │ minikube    │
 ----
 
 === Minikube configuration
@@ -194,7 +195,7 @@ image::deployment-to-minikube.png[]
 
 [source, shell]
 ----
-mvn io.quarkus.platform:quarkus-maven-plugin:3.8.2:create \
+mvn io.quarkus.platform:quarkus-maven-plugin:3.34.6:create \
     -DprojectGroupId=at.htl.minikube \
     -DprojectArtifactId=minikube-demo \
     -Dextensions='resteasy-reactive, smallrye-health'
@@ -350,7 +351,7 @@ image::runner-jar-in-target.png[]
 .Dockerfile
 [source,dockerfile]
 ----
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:21-jre
 
 RUN mkdir -p /opt/application
 COPY *-runner.jar /opt/application/backend.jar
