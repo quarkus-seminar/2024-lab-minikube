@@ -198,7 +198,7 @@ image::deployment-to-minikube.png[]
 mvn io.quarkus.platform:quarkus-maven-plugin:3.34.6:create \
     -DprojectGroupId=at.htl.minikube \
     -DprojectArtifactId=minikube-demo \
-    -Dextensions='resteasy-reactive, smallrye-health'
+    -Dextensions='rest, smallrye-health'
 ----
 
 or start the script link:create-project.sh[create-project.sh]
@@ -214,12 +214,11 @@ or start the script link:create-project.sh[create-project.sh]
 [INFO] Building Maven Stub Project (No POM) 1
 [INFO] --------------------------------[ pom ]---------------------------------
 [INFO]
-[INFO] --- quarkus:3.7.3:create (default-cli) @ standalone-pom ---
-[INFO] Looking for the newly published extensions in registry.quarkus.io
+[INFO] --- quarkus:3.34.6:create (default-cli) @ standalone-pom ---
 [INFO] -----------
 [INFO] selected extensions:
+- io.quarkus:quarkus-rest
 - io.quarkus:quarkus-smallrye-health
-- io.quarkus:quarkus-resteasy-reactive
 
 [INFO]
 applying codestarts...
@@ -229,16 +228,16 @@ applying codestarts...
 📝 config-properties
 🔧 tooling-dockerfiles
 🔧 tooling-maven-wrapper
-🚀 resteasy-reactive-codestart
+🚀 rest-codestart
 🚀 smallrye-health-codestart
 [INFO]
 -----------
 [SUCCESS] ✅  quarkus project has been successfully generated in:
---> /Users/stuetz/work/_delete/minikube-demo
+--> /Users/stuetz/work/2024-ph-seminar/temp/minikube-demo
 -----------
 [INFO]
 [INFO] ========================================================================================
-[INFO] Your new application has been created in /Users/stuetz/work/_delete/minikube-demo
+[INFO] Your new application has been created in /Users/stuetz/work/2024-ph-seminar/temp/minikube-demo
 [INFO] Navigate into this directory and launch your application with mvn quarkus:dev
 [INFO] Your application will be accessible on http://localhost:8080
 [INFO] ========================================================================================
@@ -246,15 +245,15 @@ applying codestarts...
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  4.232 s
-[INFO] Finished at: 2024-02-19T08:12:54+01:00
+[INFO] Total time:  1.407 s
+[INFO] Finished at: 2026-04-28T16:43:32+02:00
 [INFO] ------------------------------------------------------------------------
 ----
 ====
 
-or create a project on https://code.quarkus.io/?g=at.htl.minikube&a=minikube-demo&j=21&e=resteasy-reactive-jackson&e=smallrye-health[quarkus.io^] - kbd:[START CODING].
+or create a project on https://code.quarkus.io/?g=at.htl.minikube&a=minikube-demo&j=25&e=rest&e=smallrye-health[quarkus.io^] - kbd:[START CODING].
 
-TIP: On https://code.quarkus.io/?g=at.htl.minikube&a=minikube-demo&j=21&e=resteasy-reactive-jackson&e=smallrye-health[quarkus.io^] you can also create a github-repo automatically.
+TIP: On https://code.quarkus.io/?g=at.htl.minikube&a=minikube-demo&j=25&e=rest&e=smallrye-health[quarkus.io^] you can also create a github-repo automatically.
 
 image::quarkus-io.png[]
 
