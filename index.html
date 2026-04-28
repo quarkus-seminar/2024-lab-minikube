@@ -556,7 +556,7 @@ pre.rouge .gs {
 <div class="details">
 <span id="author" class="author">Thomas W. Stütz, thanks to Christian Aberger for his professional input</span><br>
 <span id="revnumber">version 2.0.0,</span>
-<span id="revdate">2024-10-15</span>
+<span id="revdate">2026-04-28</span>
 <br><span id="revremark">build a simple rest endpoint and deploy app to minikube/cloud</span>
 </div>
 <div id="toc" class="toc2">
@@ -726,10 +726,11 @@ minikube addons enable dashboard</pre>
 <div class="listingblock">
 <div class="title">result</div>
 <div class="content">
-<pre>| dashboard                   | minikube | enabled ✅   | Kubernetes                     |
-| default-storageclass        | minikube | enabled ✅   | Kubernetes                     |
-| metrics-server              | minikube | enabled ✅   | Kubernetes                     |
-| storage-provisioner         | minikube | enabled ✅   | minikube                       |</pre>
+<pre>│ dashboard             │ minikube │ enabled ✅ │ Kubernetes  │
+│ default-storageclass  │ minikube │ enabled ✅ │ Kubernetes  │
+│ ingress               │ minikube │ enabled ✅ │ Kubernetes  │
+│ metrics-server        │ minikube │ enabled ✅ │ Kubernetes  │
+│ storage-provisioner   │ minikube │ enabled ✅ │ minikube    │</pre>
 </div>
 </div>
 <div class="sect2">
@@ -848,7 +849,7 @@ users:
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell">mvn io.quarkus.platform:quarkus-maven-plugin:3.8.2:create <span class="se">\</span>
+<pre class="rouge highlight"><code data-lang="shell">mvn io.quarkus.platform:quarkus-maven-plugin:3.34.6:create <span class="se">\</span>
     <span class="nt">-DprojectGroupId</span><span class="o">=</span>at.htl.minikube <span class="se">\</span>
     <span class="nt">-DprojectArtifactId</span><span class="o">=</span>minikube-demo <span class="se">\</span>
     <span class="nt">-Dextensions</span><span class="o">=</span><span class="s1">'resteasy-reactive, smallrye-health'</span></code></pre>
@@ -1075,7 +1076,7 @@ Hello from RESTEasy Reactive%</pre>
 <div class="listingblock">
 <div class="title">Dockerfile</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="dockerfile"><span class="k">FROM</span><span class="s"> eclipse-temurin:17-jre</span>
+<pre class="rouge highlight"><code data-lang="dockerfile"><span class="k">FROM</span><span class="s"> eclipse-temurin:21-jre</span>
 
 <span class="k">RUN </span><span class="nb">mkdir</span> <span class="nt">-p</span> /opt/application
 <span class="k">COPY</span><span class="s"> *-runner.jar /opt/application/backend.jar</span>
@@ -1569,7 +1570,7 @@ Hello from RESTEasy Reactive%</pre>
 <div id="footer">
 <div id="footer-text">
 Version 2.0.0<br>
-Last updated 2024-10-15 12:42:23 UTC
+Last updated 2026-04-28 14:37:27 UTC
 </div>
 </div>
 </body>
