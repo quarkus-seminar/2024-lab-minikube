@@ -852,7 +852,7 @@ users:
 <pre class="rouge highlight"><code data-lang="shell">mvn io.quarkus.platform:quarkus-maven-plugin:3.34.6:create <span class="se">\</span>
     <span class="nt">-DprojectGroupId</span><span class="o">=</span>at.htl.minikube <span class="se">\</span>
     <span class="nt">-DprojectArtifactId</span><span class="o">=</span>minikube-demo <span class="se">\</span>
-    <span class="nt">-Dextensions</span><span class="o">=</span><span class="s1">'resteasy-reactive, smallrye-health'</span></code></pre>
+    <span class="nt">-Dextensions</span><span class="o">=</span><span class="s1">'rest, smallrye-health'</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -869,12 +869,11 @@ users:
 [INFO] Building Maven Stub Project (No POM) 1
 [INFO] --------------------------------[ pom ]---------------------------------
 [INFO]
-[INFO] --- quarkus:3.7.3:create (default-cli) @ standalone-pom ---
-[INFO] Looking for the newly published extensions in registry.quarkus.io
+[INFO] --- quarkus:3.34.6:create (default-cli) @ standalone-pom ---
 [INFO] -----------
 [INFO] selected extensions:
+- io.quarkus:quarkus-rest
 - io.quarkus:quarkus-smallrye-health
-- io.quarkus:quarkus-resteasy-reactive
 
 [INFO]
 applying codestarts...
@@ -884,16 +883,16 @@ applying codestarts...
 📝 config-properties
 🔧 tooling-dockerfiles
 🔧 tooling-maven-wrapper
-🚀 resteasy-reactive-codestart
+🚀 rest-codestart
 🚀 smallrye-health-codestart
 [INFO]
 -----------
 [SUCCESS] ✅  quarkus project has been successfully generated in:
---&gt; /Users/stuetz/work/_delete/minikube-demo
+--&gt; /Users/stuetz/work/2024-ph-seminar/temp/minikube-demo
 -----------
 [INFO]
 [INFO] ========================================================================================
-[INFO] Your new application has been created in /Users/stuetz/work/_delete/minikube-demo
+[INFO] Your new application has been created in /Users/stuetz/work/2024-ph-seminar/temp/minikube-demo
 [INFO] Navigate into this directory and launch your application with mvn quarkus:dev
 [INFO] Your application will be accessible on http://localhost:8080
 [INFO] ========================================================================================
@@ -901,15 +900,15 @@ applying codestarts...
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  4.232 s
-[INFO] Finished at: 2024-02-19T08:12:54+01:00
+[INFO] Total time:  1.407 s
+[INFO] Finished at: 2026-04-28T16:43:32+02:00
 [INFO] ------------------------------------------------------------------------</pre>
 </div>
 </div>
 </div>
 </details>
 <div class="paragraph">
-<p>or create a project on <a href="https://code.quarkus.io/?g=at.htl.minikube&amp;a=minikube-demo&amp;j=21&amp;e=resteasy-reactive-jackson&amp;e=smallrye-health" target="_blank" rel="noopener">quarkus.io</a> - <kbd>START CODING</kbd>.</p>
+<p>or create a project on <a href="https://code.quarkus.io/?g=at.htl.minikube&amp;a=minikube-demo&amp;j=25&amp;e=rest&amp;e=smallrye-health" target="_blank" rel="noopener">quarkus.io</a> - <kbd>START CODING</kbd>.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -918,7 +917,7 @@ applying codestarts...
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-On <a href="https://code.quarkus.io/?g=at.htl.minikube&amp;a=minikube-demo&amp;j=21&amp;e=resteasy-reactive-jackson&amp;e=smallrye-health" target="_blank" rel="noopener">quarkus.io</a> you can also create a github-repo automatically.
+On <a href="https://code.quarkus.io/?g=at.htl.minikube&amp;a=minikube-demo&amp;j=25&amp;e=rest&amp;e=smallrye-health" target="_blank" rel="noopener">quarkus.io</a> you can also create a github-repo automatically.
 </td>
 </tr>
 </table>
@@ -1570,7 +1569,7 @@ Hello from RESTEasy Reactive%</pre>
 <div id="footer">
 <div id="footer-text">
 Version 2.0.0<br>
-Last updated 2026-04-28 14:38:28 UTC
+Last updated 2026-04-28 14:47:33 UTC
 </div>
 </div>
 </body>
